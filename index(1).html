@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KI-Bewerbungscheck</title>
+<style>
+:root{--bg:#f6f4f1;--card:#fff;--text:#202124;--muted:#666;--accent:#6b3fa0;--accent2:#efe7f7;--good:#18794e;--bad:#b42318;--border:#ddd6e5}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:760px;margin:auto;padding:22px 16px 48px}.hero{background:var(--accent);color:white;border-radius:22px;padding:28px 24px;margin-bottom:18px}
+h1{margin:0 0 8px;font-size:30px}h2{font-size:22px;margin-top:0}h3{font-size:18px}.hero p{margin:6px 0}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin:16px 0}
+.badge{display:inline-block;background:var(--accent2);color:var(--accent);font-weight:bold;border-radius:999px;padding:5px 10px;font-size:13px;margin-bottom:10px}
+.job{background:#faf9fb;border-left:5px solid var(--accent);padding:15px;border-radius:8px}.choice{display:block;width:100%;text-align:left;background:white;border:2px solid var(--border);border-radius:12px;padding:14px;margin:9px 0;font-size:16px;cursor:pointer}.choice:hover{border-color:var(--accent)}.choice.selected{border-color:var(--accent);background:var(--accent2)}
+button.primary{border:0;background:var(--accent);color:white;padding:13px 18px;border-radius:11px;font-weight:bold;font-size:16px;cursor:pointer}button.secondary{border:1px solid var(--border);background:white;padding:11px 16px;border-radius:11px;font-weight:bold;cursor:pointer}
+.feedback{margin-top:15px;padding:15px;border-radius:12px;background:#f4f8f5;border:1px solid #cce4d7}.wrong{background:#fff4f2;border-color:#f2c5bf}.hidden{display:none}.score{font-size:34px;font-weight:bold;color:var(--accent)}
+.progress{height:9px;background:#e5e0e8;border-radius:20px;overflow:hidden}.bar{height:100%;background:var(--accent);width:0}
+.small{font-size:14px;color:var(--muted)}ul{padding-left:22px}.tip{background:#fff9df;border:1px solid #eadb92;padding:13px;border-radius:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="badge" style="background:#fff;color:#6b3fa0">Interaktive Übung</div>
+<h1>🤖 KI-Bewerbungscheck</h1>
+<p>Kannst du erkennen, wenn eine KI eine Bewerbung nicht passend formuliert?</p>
+</section>
+
+<div class="card">
+<h2>Deine Aufgabe</h2>
+<p>Du bewirbst dich auf diese Stelle. Lies die Stellenanzeige und die beiden kurzen Anschreiben.</p>
+<div class="job">
+<strong>Verkäufer/in (m/w/d) – Modegeschäft</strong>
+<ul>
+<li>Beratung von Kundinnen und Kunden</li>
+<li>Waren präsentieren und auffüllen</li>
+<li>Freundliches Auftreten und Teamarbeit</li>
+<li>Erfahrung im Einzelhandel ist hilfreich</li>
+</ul>
+</div>
+<p><strong>Welches Anschreiben passt besser zur Stelle?</strong></p>
+<button class="choice" data-answer="A">A: „Durch meine langjährige Erfahrung in der strategischen Unternehmensentwicklung und meine ausgeprägte Expertise im internationalen Projektmanagement bin ich davon überzeugt, Ihr Unternehmen nachhaltig voranzubringen.“</button>
+<button class="choice" data-answer="B">B: „Ich habe zwei Jahre im Einzelhandel gearbeitet. Ich berate gerne Kundinnen und Kunden und arbeite gerne im Team. Deshalb interessiere ich mich für die Stelle in Ihrem Modegeschäft.“</button>
+<div id="feedback1" class="feedback hidden"></div>
+</div>
+
+<div class="card">
+<span class="badge">Runde 2</span>
+<h2>🔎 Finde die KI-Fehler</h2>
+<p>Die folgende Antwort wurde mit KI erstellt. Welche <strong>drei Probleme</strong> erkennst du?</p>
+<div class="job"><strong>Aufgabe:</strong> „Verbessere mein Anschreiben für eine Stelle als Lagerhelfer.“<br><br>
+„Sehr geehrte Damen und Herren, mit meiner akademischen Expertise im Bereich Logistikmanagement und meiner langjährigen Führungserfahrung möchte ich mich bei Ihnen als Lagerhelfer bewerben. Seit meiner Kindheit träume ich davon, in Ihrem international renommierten Unternehmen zu arbeiten. Ich freue mich auf ein persönliches Gespräch.“</div>
+<div id="checks">
+<label class="choice"><input type="checkbox" value="level"> Die Sprache ist unnötig kompliziert.</label>
+<label class="choice"><input type="checkbox" value="invented"> Die KI könnte Informationen über Erfahrung erfinden.</label>
+<label class="choice"><input type="checkbox" value="generic"> Der Text ist sehr allgemein und nennt wenig Konkretes.</label>
+<label class="choice"><input type="checkbox" value="spelling"> Es gibt einen Rechtschreibfehler im Wort „persönliches“.</label>
+</div>
+<button class="primary" id="check2">Antwort prüfen</button>
+<div id="feedback2" class="feedback hidden"></div>
+</div>
+
+<div class="card">
+<span class="badge">Runde 3</span>
+<h2>✍️ Verbessere den Prompt</h2>
+<p>Welcher Prompt hilft der KI am wahrscheinlichsten, ein passendes Anschreiben zu erstellen?</p>
+<button class="choice" data-prompt="1">A: „Schreib mir eine Bewerbung als Verkäufer.“</button>
+<button class="choice" data-prompt="2">B: „Schreibe ein Anschreiben für eine Verkäuferstelle. Ich habe 2 Jahre Erfahrung im Einzelhandel, Deutsch B1 und möchte einen einfachen, freundlichen Text. Verwende nur Informationen, die ich dir gegeben habe.“</button>
+<button class="choice" data-prompt="3">C: „Schreib eine perfekte Bewerbung, die garantiert angenommen wird.“</button>
+<div id="feedback3" class="feedback hidden"></div>
+</div>
+
+<div class="card">
+<span class="badge">Zum Mitnehmen</span>
+<h2>🧠 Dein KI-Merksatz</h2>
+<div class="tip"><strong>Guter Prompt = Aufgabe + wichtige Informationen + gewünschtes Ergebnis.</strong><br><br>
+Und danach: <strong>Prüfen!</strong> KI kann Fehler machen oder Informationen erfinden.</div>
+</div>
+
+<div class="card" id="result">
+<h2>🏁 Ergebnis</h2>
+<div class="score"><span id="score">0</span> / 3</div>
+<p id="resultText">Bearbeite die drei Runden. Danach kannst du dein Ergebnis sehen.</p>
+<button class="secondary" id="reset">Nochmal versuchen</button>
+<p class="small">Diese Übung enthält keine Eingabefelder für persönliche Daten. Bitte keine echten Bewerbungsunterlagen oder persönlichen Daten in diese Demo kopieren.</p>
+</div>
+</div>
+<script>
+let score=[false,false,false];
+function update(){
+ const n=score.filter(Boolean).length; document.getElementById('score').textContent=n;
+ document.getElementById('resultText').textContent=n===3?'🎉 Alles richtig! Du kannst KI kritisch und gezielt für Bewerbungen einsetzen.':n>0?'Gut! Schau dir die Feedbacks an und probiere die offenen Aufgaben noch einmal.':'Noch keine Punkte – los geht’s!';
+}
+document.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('[data-answer]').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
+ const f=document.getElementById('feedback1');f.classList.remove('hidden');
+ if(b.dataset.answer==='B'){score[0]=true;f.className='feedback';f.innerHTML='<strong>✓ Richtig!</strong><br>B passt zur Stelle: konkrete Erfahrung, passende Aufgaben und einfache Sprache.'}
+ else{score[0]=false;f.className='feedback wrong';f.innerHTML='<strong>✗ Nicht die passendere Antwort.</strong><br>A klingt professionell, enthält aber Erfahrungen, die in der Stellenanzeige nicht gefragt sind, und wirkt sehr allgemein.'}
+ update();
+}));
+document.getElementById('check2').addEventListener('click',()=>{
+ const vals=[...document.querySelectorAll('#checks input:checked')].map(x=>x.value);
+ const correct=['level','invented','generic'];
+ const ok=vals.length===3&&correct.every(x=>vals.includes(x));
+ const f=document.getElementById('feedback2');f.classList.remove('hidden');
+ if(ok){score[1]=true;f.className='feedback';f.innerHTML='<strong>✓ Richtig!</strong><br>Der Text ist unnötig kompliziert, enthält möglicherweise erfundene Angaben und bleibt sehr allgemein. Der Rechtschreibfehler ist dagegen eine Falle.'}
+ else{score[1]=false;f.className='feedback wrong';f.innerHTML='<strong>Fast!</strong><br>Gesucht sind: unnötig komplizierte Sprache, mögliche erfundene Informationen und ein sehr allgemeiner Text.'}
+ update();
+});
+document.querySelectorAll('[data-prompt]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('[data-prompt]').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
+ const f=document.getElementById('feedback3');f.classList.remove('hidden');
+ if(b.dataset.prompt==='2'){score[2]=true;f.className='feedback';f.innerHTML='<strong>✓ Richtig!</strong><br>B gibt der KI Aufgabe, Hintergrundinformationen und klare Grenzen vor – und berücksichtigt das Sprachniveau.'}
+ else{score[2]=false;f.className='feedback wrong';f.innerHTML='<strong>✗ Noch nicht.</strong><br>Ein guter Prompt gibt der KI mehr Informationen: Erfahrung, Sprachlevel, Ziel und wichtige Grenzen.'}
+ update();
+}));
+document.getElementById('reset').addEventListener('click',()=>{
+ score=[false,false,false];document.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));document.querySelectorAll('input').forEach(x=>x.checked=false);document.querySelectorAll('.feedback').forEach(x=>x.classList.add('hidden'));update();window.scrollTo({top:0,behavior:'smooth'});
+});
+update();
+</script>
+</body>
+</html>
